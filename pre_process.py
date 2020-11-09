@@ -13,10 +13,6 @@ def process_img(path):
             cv2.drawContours(blank_image, contours, idx, (0, 255, 0), 1)
             if (w * h) > 260:
                 cv2.imwrite("cache/" + str(idx) + ".png", blank_image[y:y + h, x:x + w])
-                # cv2.rectangle(blank_image, (x, y), (x + w, y + h), (0, 255, 255), 1)
-        # cv2.imshow("res", blank_image)
-
-    # cv2.waitKey(0)
 
 
 # rename về image_0...
@@ -29,10 +25,5 @@ def rename_files():
 
 
 # rename_files()
-# process_img('data_pre/image_40.jpg')
+process_img('data_pre/image_40.jpg')
 
-img = cv2.imread('data_pre/image_90.jpg')
-print(img.shape)
-img = cv2.resize(img, (200, 100))
-cv2.imshow('', img)
-cv2.waitKey()
