@@ -9,7 +9,7 @@ class_name = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'none']
 my_model = load_model("modal.h5")
 
 # test image
-path = 'data_pre/image_56.jpg'
+path = 'cache/predict.jpg'
 img = cv2.imread(path, 0)
 img_origin = cv2.imread(path)
 

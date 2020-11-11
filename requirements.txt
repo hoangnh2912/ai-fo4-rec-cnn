@@ -1,5 +1,6 @@
-numpy
-keras
+numpy~=1.18.5
+keras~=2.4.3
 tensorflow
-opencv-python
+opencv-python~=4.4.0.44
 scikit-learn
+fastapi~=0.61.2
