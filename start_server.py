@@ -22,7 +22,7 @@ class Body(BaseModel):
     image: str
 
 
-@app.post("/")
+@app.post("/for_predict")
 async def root(image: Body):
     path = readb64(image.image)
     res = using(path, my_model)
