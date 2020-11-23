@@ -36,8 +36,9 @@ def not_in_list_predict(box, list_predict):
     return True
 
 
-def using(path, my_model):
+def using(path, my_model, add=(0, 0)):
     img = cv2.imread(path, 0)
+    h_ori, w_ori = img.shape
     img = cv2.resize(img, (512, 248))
     blank_image = np.zeros((img.shape[0], img.shape[1], 3), np.uint8)
     edges = cv2.Canny(img, 100, 100)
@@ -86,11 +87,14 @@ def using(path, my_model):
             # cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 1)
             # cv2.putText(img, str(text), org, font,
             #             fontScale, color, thickness, cv2.LINE_AA)
-            last_res.append({'text': text, 'x': x + w / 2, 'y': y + h / 2})
+            x_add, y_add = add
+            w_re, h_re = (512, 248)
+            res_x = x_add + (x + w / 2) * (w_ori / w_re)
+            res_y = y_add + (y + h / 2) * (h_ori / h_re)
+            last_res.append({'text': text, 'x': res_x, 'y': res_y})
     # cv2.imshow('', img)
     # cv2.waitKey()
     return last_res
-
 
 # my_model = load_model("modal.h5")
 # using('cache/predict.jpg', my_model)

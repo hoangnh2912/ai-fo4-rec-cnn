@@ -20,10 +20,12 @@ app = FastAPI()
 
 class Body(BaseModel):
     image: str
+    x: float
+    y: float
 
 
 @app.post("/for_predict")
 async def root(image: Body):
     path = readb64(image.image)
-    res = using(path, my_model)
+    res = using(path, my_model, (image.x, image.y))
     return res
