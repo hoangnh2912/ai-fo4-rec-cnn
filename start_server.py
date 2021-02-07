@@ -13,8 +13,7 @@ from using_modal import using
 my_model = load_model("modal_v2.h5")
 
 
-def readb64(base64_string):
-    path = 'cache/predict.jpg'
+def readb64(base64_string, path='cache/predict.jpg'):
     with open(path, 'wb') as f_output:
         f_output.write(base64.b64decode(base64_string))
     return path

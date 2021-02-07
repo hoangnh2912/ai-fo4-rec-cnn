@@ -33,7 +33,7 @@ def not_in_list_predict(box, list_predict):
     for other_pre in list_predict:
         _, _, _, _, w2, h2, _ = other_pre
         cx2, cy2 = center_box(other_pre)
-        if cx1 == cx2 and w2 * h2 >= w1 * h1:
+        if cx1 == cx2 and w2 * h2 >= w1 * h1 and cy1 == cy2:
             return False
     return True
 
@@ -41,10 +41,10 @@ def not_in_list_predict(box, list_predict):
 def using(path, my_model, add=(0, 0)):
     img = cv2.imread(path, 0)
     h_ori, w_ori = img.shape
-    img = cv2.resize(img, (512, 248))
+    img = cv2.resize(img, (512, 248), interpolation=cv2.INTER_LANCZOS4)
     ret, thresh_image = cv2.threshold(img, 100, 255, cv2.THRESH_BINARY)
     blank_image = np.zeros((img.shape[0], img.shape[1], 3), np.uint8)
-    edges = cv2.Canny(thresh_image, 30, 30)
+    edges = cv2.Canny(thresh_image, 1, 100)
     contours, _ = cv2.findContours(edges, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
     process_con = []
 
@@ -54,27 +54,39 @@ def using(path, my_model, add=(0, 0)):
         x, y, w, h = box
         if 10 < w * h < 2000:
             cv2.drawContours(blank_image, contours, idx, (0, 255, 0), 1)
-            if (w * h) > 200 and not_in_list_predict(box, process_con):
+            # if (w * h) > 150:
+            if (w * h) > 150 and not_in_list_predict(box, process_con):
                 crop_image = blank_image[y:y + h, x:x + w]
                 crop_image = cv2.dilate(crop_image, kernel, iterations=1)
                 crop_image = cv2.cvtColor(crop_image, cv2.COLOR_BGR2GRAY)
-                _, edges_crop = cv2.threshold(crop_image, 100, 255, cv2.THRESH_BINARY)
+                _, edges_crop = cv2.threshold(crop_image, 50, 255, cv2.THRESH_BINARY)
                 cs, _ = cv2.findContours(edges_crop, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
                 blank_predict = np.zeros((h, w, 3), np.uint8)
                 for i, _ in enumerate(cs):
-                    if cv2.contourArea(cs[i]) > 10:
+                    if cv2.contourArea(cs[i]) > 15:
                         cv2.drawContours(blank_predict, cs, i, (0, 255, 0), 1)
                 blank_predict = cv2.cvtColor(blank_predict, cv2.COLOR_BGR2GRAY)
-                image = cv2.resize(blank_predict, dsize=shape)
+                image = cv2.resize(blank_predict, dsize=shape, interpolation=cv2.INTER_NEAREST)
+                image_dup = cv2.resize(blank_predict, dsize=shape, interpolation=cv2.INTER_LANCZOS4)
                 # image = np.array(image).reshape(26, 45, 1)
                 image = np.array(image).reshape(21, 39, 1)
-                image = np.expand_dims(image, axis=0)
-                predict = my_model.predict(image)
-                name = class_name[np.argmax(predict)]
+                image_dup = np.array(image_dup).reshape(21, 39, 1)
+                # image = np.expand_dims(image, axis=0)
+                predict = my_model.predict(np.array([image, image_dup]))
+                arg_max_nearest = np.argmax(predict[0])
+                arg_max_lanczos4 = np.argmax(predict[1])
+                arg_predict = arg_max_nearest
+                if arg_max_nearest != arg_max_lanczos4:
+                    if arg_max_nearest == 10:
+                        arg_predict = arg_max_lanczos4
+                    if arg_max_lanczos4 == 10:
+                        arg_predict = arg_max_nearest
+                name = class_name[arg_predict]
                 # print(name)
                 # cv2.imshow(name, blank_predict)
                 # cv2.waitKey()
-                if np.max(predict) >= 0.4 and name != 'none':
+                # print()
+                if np.max(predict) >= 0.4 and name != 'none' and w <= h:
                     process_con.append((np.max(predict), name, x, y, w, h, idx))
     new_con = np.array(process_con)
     for idx_c, box in enumerate(process_con):
@@ -108,7 +120,7 @@ def using(path, my_model, add=(0, 0)):
             last_res.append({'text': text, 'x': res_x, 'y': res_y})
     print("end:", time() - start)
     # cv2.imshow("blank_image", blank_image)
-    # cv2.imshow('', img)
-    # cv2.waitKey()
+    cv2.imshow('', img)
+    cv2.waitKey()
 
     return last_res
