@@ -4,3 +4,5 @@ fastapi
 pydantic
 keras
 tensorflow
+uvicorn
+python-multipart
