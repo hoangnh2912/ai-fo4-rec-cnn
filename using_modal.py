@@ -120,7 +120,7 @@ def using(path, my_model, add=(0, 0)):
             last_res.append({'text': text, 'x': res_x, 'y': res_y})
     print("end:", time() - start)
     # cv2.imshow("blank_image", blank_image)
-    cv2.imshow('', img)
-    cv2.waitKey()
+    # cv2.imshow('', img)
+    # cv2.waitKey()
 
     return last_res
