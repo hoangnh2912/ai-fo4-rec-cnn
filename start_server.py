@@ -11,7 +11,8 @@ from using_modal import using
 
 # my_model = load_model("modal.h5")
 # my_model = load_model("modal_v2.h5")
-my_model = load_model("modal_v3.h5")
+# my_model = load_model("modal_v3.h5")
+my_model = load_model("modal_v4.h5")
 
 
 def readb64(base64_string, path='cache/predict.jpg'):

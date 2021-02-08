@@ -38,7 +38,7 @@
 #     ret, thresh_image = cv2.threshold(img, 100, 255, cv2.THRESH_BINARY)
 #     blank_image = np.zeros((img.shape[0], img.shape[1], 3), np.uint8)
 #     edges = cv2.Canny(thresh_image, 30, 30)
-#     contours, _ = cv2.findContours(edges, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
+#     contours, _ = cv2.findContours(edges, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
 #     process_con = []
 #
 #     for idx, con in enumerate(contours):
@@ -51,7 +51,7 @@
 #                 crop_image = cv2.dilate(crop_image, kernel, iterations=1)
 #                 crop_image = cv2.cvtColor(crop_image, cv2.COLOR_BGR2GRAY)
 #                 _, edges_crop = cv2.threshold(crop_image, 50, 255, cv2.THRESH_BINARY)
-#                 cs, _ = cv2.findContours(edges_crop, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
+#                 cs, _ = cv2.findContours(edges_crop, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
 #                 blank_predict = np.zeros((h, w, 3), np.uint8)
 #                 for i, _ in enumerate(cs):
 #                     if cv2.contourArea(cs[i]) > 10:

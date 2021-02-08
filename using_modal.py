@@ -44,8 +44,8 @@ def using(path, my_model, add=(0, 0)):
     img = cv2.resize(img, (512, 248), interpolation=cv2.INTER_LANCZOS4)
     ret, thresh_image = cv2.threshold(img, 100, 255, cv2.THRESH_BINARY)
     blank_image = np.zeros((img.shape[0], img.shape[1], 3), np.uint8)
-    edges = cv2.Canny(thresh_image, 1, 100)
-    contours, _ = cv2.findContours(edges, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
+    edges = cv2.Canny(thresh_image, 1, 1)
+    contours, _ = cv2.findContours(edges, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
     process_con = []
 
     start = time()
@@ -59,13 +59,14 @@ def using(path, my_model, add=(0, 0)):
                 crop_image = blank_image[y:y + h, x:x + w]
                 crop_image = cv2.dilate(crop_image, kernel, iterations=1)
                 crop_image = cv2.cvtColor(crop_image, cv2.COLOR_BGR2GRAY)
-                _, edges_crop = cv2.threshold(crop_image, 50, 255, cv2.THRESH_BINARY)
-                cs, _ = cv2.findContours(edges_crop, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
+                _, edges_crop = cv2.threshold(crop_image, 5, 255, cv2.THRESH_BINARY)
+                cs, _ = cv2.findContours(edges_crop, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
                 blank_predict = np.zeros((h, w, 3), np.uint8)
                 for i, _ in enumerate(cs):
                     if cv2.contourArea(cs[i]) > 15:
                         cv2.drawContours(blank_predict, cs, i, (0, 255, 0), 1)
                 blank_predict = cv2.cvtColor(blank_predict, cv2.COLOR_BGR2GRAY)
+
                 image = cv2.resize(blank_predict, dsize=shape, interpolation=cv2.INTER_NEAREST)
                 image_dup = cv2.resize(blank_predict, dsize=shape, interpolation=cv2.INTER_LANCZOS4)
                 # image = np.array(image).reshape(26, 45, 1)

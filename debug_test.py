@@ -1,6 +1,6 @@
 from start_server import readb64
 
-f = open("loi_2.txt", "r")
+f = open("loi_3.txt", "r")
 data = f.read()
 data = data.split('\n')
 data = list(filter(lambda x: len(x) > 100, data))
