@@ -4,7 +4,7 @@ import shutil
 from time import time
 
 from fastapi import FastAPI, UploadFile, File, Form
-from keras.models import load_model
+from tensorflow.keras.models import load_model
 from pydantic import BaseModel
 
 from using_modal import using
