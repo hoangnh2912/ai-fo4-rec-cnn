@@ -38,7 +38,7 @@ async def root(image: Body):
 
 
 @app.post("/fo4_predict")
-async def fo4_predict(image: UploadFile = File(...), x: float = Form(...), y: float = Form(...)):
+def fo4_predict(image: UploadFile = File(...), x: float = Form(...), y: float = Form(...)):
     try:
         res = using(get_image_url(image), my_model, (x, y))
         return res
