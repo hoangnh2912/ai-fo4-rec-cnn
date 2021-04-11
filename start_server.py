@@ -42,7 +42,8 @@ async def fo4_predict(image: UploadFile = File(...), x: float = Form(...), y: fl
     try:
         res = using(get_image_url(image), my_model, (x, y))
         return res
-    except:
+    except Exception as err:
+        print(err)
         return {
             "error": True
         }
