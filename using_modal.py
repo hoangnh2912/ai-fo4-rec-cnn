@@ -74,7 +74,7 @@ async def using(path, my_model, add=(0, 0)):
                 image = np.array(image).reshape(21, 39, 1)
                 image_dup = np.array(image_dup).reshape(21, 39, 1)
                 # image = np.expand_dims(image, axis=0)
-                predict = await my_model.predict(np.array([image, image_dup]))
+                predict = my_model.predict(np.array([image, image_dup]))
                 arg_max_nearest = np.argmax(predict[0])
                 arg_max_lanczos4 = np.argmax(predict[1])
                 arg_predict = arg_max_nearest
