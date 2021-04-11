@@ -120,7 +120,7 @@ def using(path, my_model, add=(0, 0)):
             res_x = x_add + (x + w / 2) * (w_ori / w_re)
             res_y = y_add + (y + h / 2) * (h_ori / h_re)
             last_res.append({'text': text, 'x': res_x, 'y': res_y})
-    print("end:", time() - start, "text:", text)
+    print("end:", time() - start, "text:", last_res)
     os.system("rm -rf " + path)
     # cv2.imshow("blank_image", blank_image)
     # cv2.imshow('', img)
