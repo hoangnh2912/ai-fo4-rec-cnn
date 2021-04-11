@@ -4,15 +4,17 @@ import shutil
 from time import time
 
 from fastapi import FastAPI, UploadFile, File, Form
-from tensorflow.keras.models import load_model
 from pydantic import BaseModel
+from tensorflow.keras.models import load_model
 
 from using_modal import using
+
 
 # my_model = load_model("modal.h5")
 # my_model = load_model("modal_v2.h5")
 # my_model = load_model("modal_v3.h5")
-my_model = load_model("modal_v4.h5")
+# my_model = load_model("modal_v4.h5")
+# print("Loaded Model")
 
 
 def readb64(base64_string, path='cache/predict.jpg'):
@@ -30,16 +32,17 @@ class Body(BaseModel):
     y: float
 
 
-@app.post("/for_predict")
-async def root(image: Body):
-    path = readb64(image.image)
-    res = using(path, my_model, (image.x, image.y))
-    return res
+# @app.post("/for_predict")
+# async def root(image: Body):
+#     path = readb64(image.image)
+#     res = using(path, my_model, (image.x, image.y))
+#     return res
 
 
 @app.post("/fo4_predict")
-def fo4_predict(image: UploadFile = File(...), x: float = Form(...), y: float = Form(...)):
+async def fo4_predict(image: UploadFile = File(...), x: float = Form(...), y: float = Form(...)):
     try:
+        my_model = load_model("modal_v4.h5")
         res = using(get_image_url(image), my_model, (x, y))
         return res
     except Exception as err:
