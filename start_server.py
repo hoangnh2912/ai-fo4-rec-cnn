@@ -43,7 +43,7 @@ class Body(BaseModel):
 async def fo4_predict(image: UploadFile = File(...), x: float = Form(...), y: float = Form(...)):
     try:
         # my_model = load_model("modal_v4.h5")
-        res = using(get_image_url(image), my_model, (x, y))
+        res = await using(get_image_url(image), my_model, (x, y))
         return res
     except Exception as err:
         print(err)
