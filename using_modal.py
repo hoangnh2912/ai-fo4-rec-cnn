@@ -129,6 +129,6 @@ def using(path, my_model, add=(0, 0)):
 
     if len(last_res) == 0:
         return {
-            "error": True
+            "error": "no result"
         }
     return last_res
