@@ -35,7 +35,7 @@ async def root(image: Body):
     path = readb64(image.image)
     res = using(path, my_model, (image.x, image.y))
     return res
-
+ 
 
 @app.post("/fo4_predict")
 async def fo4_predict(image: UploadFile = File(...), x: float = Form(...), y: float = Form(...)):
