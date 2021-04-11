@@ -3,6 +3,7 @@ from os import listdir
 
 import cv2
 import numpy as np
+from sklearn.preprocessing import LabelBinarizer
 
 
 def save_data(raw_folder='data/'):
@@ -24,7 +25,6 @@ def save_data(raw_folder='data/'):
     pixels = np.array(pixels)
     labels = np.array(labels)  # .reshape(-1,1)
 
-    from sklearn.preprocessing import LabelBinarizer
     encoder = LabelBinarizer()
     labels = encoder.fit_transform(labels)
     print(labels)

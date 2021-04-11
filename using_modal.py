@@ -2,6 +2,7 @@ from time import time
 
 import cv2
 import numpy as np
+import os
 
 # shape = (26, 45)
 shape = (21, 39)
@@ -120,6 +121,7 @@ def using(path, my_model, add=(0, 0)):
             res_y = y_add + (y + h / 2) * (h_ori / h_re)
             last_res.append({'text': text, 'x': res_x, 'y': res_y})
     print("end:", time() - start)
+    os.system("rm -rf " + path)
     # cv2.imshow("blank_image", blank_image)
     # cv2.imshow('', img)
     # cv2.waitKey()
