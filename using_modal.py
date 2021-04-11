@@ -39,7 +39,7 @@ def not_in_list_predict(box, list_predict):
     return True
 
 
-def using(path, my_model, add=(0, 0)):
+async def using(path, my_model, add=(0, 0)):
     img = cv2.imread(path, 0)
     h_ori, w_ori = img.shape
     img = cv2.resize(img, (512, 248), interpolation=cv2.INTER_LANCZOS4)
@@ -74,7 +74,7 @@ def using(path, my_model, add=(0, 0)):
                 image = np.array(image).reshape(21, 39, 1)
                 image_dup = np.array(image_dup).reshape(21, 39, 1)
                 # image = np.expand_dims(image, axis=0)
-                predict = my_model.predict(np.array([image, image_dup]))
+                predict = await my_model.predict(np.array([image, image_dup]))
                 arg_max_nearest = np.argmax(predict[0])
                 arg_max_lanczos4 = np.argmax(predict[1])
                 arg_predict = arg_max_nearest
