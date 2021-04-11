@@ -39,7 +39,7 @@ def not_in_list_predict(box, list_predict):
     return True
 
 
-async def using(path, my_model, add=(0, 0)):
+def using(path, my_model, add=(0, 0)):
     img = cv2.imread(path, 0)
     h_ori, w_ori = img.shape
     img = cv2.resize(img, (512, 248), interpolation=cv2.INTER_LANCZOS4)

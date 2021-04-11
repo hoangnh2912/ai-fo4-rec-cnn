@@ -9,7 +9,6 @@ from tensorflow.keras.models import load_model
 
 from using_modal import using
 
-
 # my_model = load_model("modal.h5")
 # my_model = load_model("modal_v2.h5")
 # my_model = load_model("modal_v3.h5")
@@ -38,12 +37,11 @@ class Body(BaseModel):
 #     res = using(path, my_model, (image.x, image.y))
 #     return res
 
-
 @app.post("/fo4_predict")
-async def fo4_predict(image: UploadFile = File(...), x: float = Form(...), y: float = Form(...)):
+def fo4_predict(image: UploadFile = File(...), x: float = Form(...), y: float = Form(...)):
     try:
         # my_model = load_model("modal_v4.h5")
-        res = await using(get_image_url(image), my_model, (x, y))
+        res = using(get_image_url(image), my_model, (x, y))
         return res
     except Exception as err:
         print(err)
